@@ -1,17 +1,18 @@
-.PHONY: all run clean
+.PHONY: all src clean run echo http
 
-CFALGS=-Wall -g -shared -llua -fPIC
+all: src run
 
-all: epoll.so socket.so run
+src:
+	$(MAKE) -C src
 
 run:
-	./http.lua
+	$(MAKE) -C example
 
-epoll.so: epoll.c epoll.h
-	$(CC) epoll.c epoll.h -o $@ $(CFALGS)
+http: src
+	$(MAKE) -C example http
 
-socket.so: socket.c socket.h
-	$(CC) socket.c socket.h -o $@ $(CFALGS)
+echo: src
+	$(MAKE) -C example echo
 
 clean:
-	$(RM) *.so
+	$(MAKE) -C src clean
